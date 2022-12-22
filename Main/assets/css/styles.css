@@ -1,0 +1,54 @@
+/*Timer Counting Element Pushed to Top Right of Screen */
+.timerHeader {
+    display: block;
+    justify-content: flex-end;
+}
+
+/* View High Scores Pushed to Top Left of Screen */
+.highScores {
+    display:flex;
+    justify-content: flex-start;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    margin-top: 0;
+}
+
+#quiz-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #question-container {
+    display:none; /* Initially hidden until start button is clicked */
+  }
+
+  #game-over-container {
+    display: none; /* Initially hidden until game is over */
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .reveal{
+    display: block;
+  }
+
+  .answer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 5%;
+
+  }
+
+  button {
+    padding: 3px;
+    width: max-content;
+    min-width: 50px;
+    margin: 2px
+  }
