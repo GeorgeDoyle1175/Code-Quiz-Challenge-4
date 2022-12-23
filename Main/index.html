@@ -13,19 +13,20 @@
     <div id="question-container">
         <h1 id= "question-title"></h1>
         <div class ="answer-container hide"> <!--onclick ="checkAnswer(event)"-->
-            <button class ="option" id="option0"></button>
-            <button class ="option" id="option1"></button>
-            <button class ="option" id="option2"></button>
-            <button class ="option" id="option3"></button>
+
+            <button class="option" id="option0"> </button>
+            <button class="option" id="option1"> </button>
+            <button class="option" id="option2"> </button>
+            <button class="option" id="option3"> </button>
         </div>
       <!-- Question and answer options will go here -->
     </div>
-    <h2 class ="hide"> WRONG!</h2>
-    <h2 class ="hide"> Correct!</h2>
+    <h2 class ="hide wrong"> WRONG!</h2>
+    <h2 class ="hide correct"> Correct!</h2>
   </div>
   <div id="game-over-container">
     <p>Game Over</p>
-    <form>
+    <form class="hide" id="high-score-form">
       <label for="initials">Enter your initials:</label><br>
       <input type="text" id="initials" name="initials"><br>
       <button id="save-score-button">Save Score</button>

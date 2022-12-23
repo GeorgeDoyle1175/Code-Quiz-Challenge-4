@@ -40,8 +40,12 @@ const questionEl = document.getElementById('question-container');
 const questionTitle = document.getElementById('question-title');
 const correctAudio = document.getElementById('correct-audio');
 const incorrectAudio = document.getElementById('incorrect-audio');
-let time = 60;
+const answerContainer = document.querySelector(".answer-container");
+const gameOverContainer = document.getElementById('game-over-container');
+
+let time = 5;
 let timerInterval;
+
 
 function startTimer() {
   showQuestion();
@@ -51,6 +55,7 @@ function startTimer() {
     document.getElementById('timer').textContent = "Time: " + time;
     if (time <= 0){
       clearInterval(timerInterval);
+
       // Quiz End Input HERE
     }
 
@@ -68,46 +73,75 @@ function showQuestion() {
   questionEl.appendChild(questionTitle);
 
 
-  const answerContainer = document.querySelector(".answer-container");
+
   answerContainer.classList.remove('hide');
 
   for (let i=0; i < question.choices.length; i++){
-    const answerEl = question.choices[i];
+    let answerEl = question.choices[i];
     const answerButton = document.getElementById("option" + i);
-    answerButton.textContent = i+1 +". " + answerEl;
+    answerButton.setAttribute("value", answerEl);
+    answerButton.textContent = answerEl;
+  }
+    // Does answer button need to be inbedded in this for loop? //
 
-   // Add click event listener to each answer button
-   answerButton.addEventListener('click', function(event) {
-    // Check if the selected answer is correct
-    if (answerEl === question.answer) {
-      // Move to the next question
-      currentQuestionIndex++;
-      correctAudio.play();
-      showQuestion();
-    } else {
-      // Subtract 5 seconds from the time
-      incorrectAudio.play();
-      time -= 5;
-    }
-  });
 
 }
 
+const answersButton = document.querySelectorAll(".option");
+console.log(answersButton);
 
-  // Generate the HTML for the question and answers
-//  // questionEl.innerHTML = `<h2>${question}</h2>`;
-//   const answersHTML = answers.map(answer => {
-//     return `<button>${answer}</button>`;
-//   }).join('');
-  //console.log(questionHTML)
 
-questionEl.innerHTM
+function userAnswerPick(event){
+  const targetElement = event.target.value;
+  if (targetElement === questions[currentQuestionIndex].answer){
+    console.log("correct answer");
+    const wrongDisplay = document.querySelector(".correct");
+    wrongDisplay.setAttribute("class","reveal")
+        setTimeout(() => {
+      // After a few seconds, set the class back to the original value
+      wrongDisplay.setAttribute("class","hide")
+    }, 1700); // 3000 milliseconds = 3 seconds
+    currentQuestionIndex++;
+    correctAudio.play();
+    showQuestion();
+  } else {
+    incorrectAudio.play();
+    time -= 5;
+    console.log("wrong answer");
+    const wrongDisplay = document.querySelector(".wrong");
+    wrongDisplay.setAttribute("class","reveal")
+        setTimeout(() => {
+      // After a few seconds, set the class back to the original value
+      wrongDisplay.setAttribute("class","hide")
+    }, 3000); // 3000 milliseconds = 3 seconds
+    console.log(wrongDisplay);
+  }
+
+
+}
+answerContainer.addEventListener('click', userAnswerPick);
+
+   // Add click event listener to each answer button
+  // answersButton.addEventListener('click', function(event) {
+    //console.log(answerEl);
+    //console.log(answerButton);
+    // Check if the selected answer is correct
+    //if (answerEl === question.answer) {
+  //     // Move to the next question
+  //     currentQuestionIndex++;
+  //     correctAudio.play();
+  //     showQuestion();
+  //   } else {
+  //     // Subtract 5 seconds from the time
+  //     incorrectAudio.play();
+  //     time -= 5;
+  //   }
+  // });
 
 
    // Update the question-container element with the question and answers HTML
 
    //console.log(questionHTML + answersHTML)
-}
 
 function startQuiz(event) {
   event.preventDefault();
