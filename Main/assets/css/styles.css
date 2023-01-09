@@ -63,3 +63,13 @@ h1 {
   button:hover {
     background-color: #0091ea;
   }
+
+  .wrong {
+    font-weight: bold;
+    transition: all .5s ease-out;
+    opacity: 1;
+  }
+
+  .wrong.hidden {
+    opacity: 0;
+  }

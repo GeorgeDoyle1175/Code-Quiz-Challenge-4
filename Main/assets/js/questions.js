@@ -43,31 +43,75 @@ const incorrectAudio = document.getElementById('incorrect-audio');
 const answerContainer = document.querySelector(".answer-container");
 const gameOverContainer = document.getElementById('game-over-container');
 
-let time = 5;
+let time = 100;
 let timerInterval;
+let results = [];
+
+if (localStorage.getItem("highscores")){
+
+  results = JSON.parse(localStorage.getItem("highscores"));
+  console.log(JSON.parse(localStorage.getItem("highscores")));
+}
+
 
 
 function startTimer() {
   showQuestion();
-  timerInterval = setInterval(function() {
+  timerInterval = setInterval(function () {
     time--;
     document.getElementById('timer').style.display
     document.getElementById('timer').textContent = "Time: " + time;
-    if (time <= 0){
+    if (time <= 0) {
       clearInterval(timerInterval);
-
-      // Quiz End Input HERE
     }
 
   }, 1000); // 1000 milliseconds = 1 second
 }
 
+function showHighScorePrompt() {
+  //localStorage.setItem("time", time); // store time in local storage
+  console.log(time);
+
+  // prompt user for initials and save high score
+  let initials = prompt("Enter your initials to save your high score:");
+
+  var playerdata = {
+    initials: initials,
+    time: time
+  }
+
+  //localStorage.setItem("initials", initials);
+
+  results.push(playerdata);
+
+  // for (let i = 0; i < localStorage.length; i++) {
+  //   let key = localStorage.key(i);
+  //   let value = localStorage.getItem(key);
+  //   console.log(key + ': ' + value);
+  // }
+
+  console.log(JSON.stringify(results));
+
+  localStorage.setItem("highscores", JSON.stringify(results));
+
+
+
+
+  console.log(results);
+}
+
+
 
 let currentQuestionIndex = 0;
 
 function showQuestion() {
+  if (currentQuestionIndex === 5) {
+    showHighScorePrompt();
+    //window.location.assign("highscores.html");
+  }
   const question = questions[currentQuestionIndex]
   const answers = questions[currentQuestionIndex].choices;
+
 
   questionTitle.textContent = question.title
   questionEl.appendChild(questionTitle);
@@ -76,13 +120,13 @@ function showQuestion() {
 
   answerContainer.classList.remove('hide');
 
-  for (let i=0; i < question.choices.length; i++){
+  for (let i = 0; i < question.choices.length; i++) {
     let answerEl = question.choices[i];
     const answerButton = document.getElementById("option" + i);
     answerButton.setAttribute("value", answerEl);
     answerButton.textContent = answerEl;
   }
-    // Does answer button need to be inbedded in this for loop? //
+  // Does answer button need to be inbedded in this for loop? //
 
 
 }
@@ -91,63 +135,67 @@ const answersButton = document.querySelectorAll(".option");
 console.log(answersButton);
 
 
-function userAnswerPick(event){
+function userAnswerPick(event) {
   const targetElement = event.target.value;
-  if (targetElement === questions[currentQuestionIndex].answer){
-    console.log("correct answer");
-    const wrongDisplay = document.querySelector(".correct");
-    wrongDisplay.setAttribute("class","reveal")
-        setTimeout(() => {
-      // After a few seconds, set the class back to the original value
-      wrongDisplay.setAttribute("class","hide")
-    }, 1700); // 3000 milliseconds = 3 seconds
+  if (targetElement === questions[currentQuestionIndex].answer && currentQuestionIndex <= 4) {
+    const correctDisplay = document.querySelector(".correct");
+    console.log(correctDisplay);
+    // correctDisplay.setAttribute("class", "reveal")
+    // setTimeout(() => {
+    //   // After a few seconds, set the class back to the original value
+    //   correctDisplay.setAttribute("class", "hide")
+    // }, 1300); // 3000 milliseconds = 3 seconds
     currentQuestionIndex++;
     correctAudio.play();
     showQuestion();
+
+  if (currentQuestionIndex === 5 || time <=0) {
+      let event = new Event("currentQuestionIndexReachFive");
+      document.dispatchEvent(event);
+      showHighScorePrompt();
+    }
+
   } else {
     incorrectAudio.play();
     time -= 5;
-    console.log("wrong answer");
-    const wrongDisplay = document.querySelector(".wrong");
-    wrongDisplay.setAttribute("class","reveal")
-        setTimeout(() => {
-      // After a few seconds, set the class back to the original value
-      wrongDisplay.setAttribute("class","hide")
-    }, 3000); // 3000 milliseconds = 3 seconds
-    console.log(wrongDisplay);
+    // const wrongDisplay = document.querySelector(".wrong");
+    // wrongDisplay.setAttribute("class", "reveal")
+    // setTimeout(() => {
+    //   // After a few seconds, set the class back to the original value
+    //   wrongDisplay.setAttribute("class", "hide")
+    // }, 1100); //
   }
-
-
 }
 answerContainer.addEventListener('click', userAnswerPick);
 
-   // Add click event listener to each answer button
-  // answersButton.addEventListener('click', function(event) {
-    //console.log(answerEl);
-    //console.log(answerButton);
-    // Check if the selected answer is correct
-    //if (answerEl === question.answer) {
-  //     // Move to the next question
-  //     currentQuestionIndex++;
-  //     correctAudio.play();
-  //     showQuestion();
-  //   } else {
-  //     // Subtract 5 seconds from the time
-  //     incorrectAudio.play();
-  //     time -= 5;
-  //   }
-  // });
+
+// Add click event listener to each answer button
+// answersButton.addEventListener('click', function(event) {
+//console.log(answerEl);
+//console.log(answerButton);
+// Check if the selected answer is correct
+//if (answerEl === question.answer) {
+//     // Move to the next question
+//     currentQuestionIndex++;
+//     correctAudio.play();
+//     showQuestion();
+//   } else {
+//     // Subtract 5 seconds from the time
+//     incorrectAudio.play();
+//     time -= 5;
+//   }
+// });
 
 
-   // Update the question-container element with the question and answers HTML
+// Update the question-container element with the question and answers HTML
 
-   //console.log(questionHTML + answersHTML)
+//console.log(questionHTML + answersHTML)
 
 function startQuiz(event) {
   event.preventDefault();
   // // Hide the start button
   startButton.style.display = 'none';
-   // Show the quiz container
+  // Show the quiz container
   questionEl.style.display = 'block';
 
   // Show the first question
