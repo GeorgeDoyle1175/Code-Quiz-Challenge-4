@@ -42,10 +42,13 @@ const correctAudio = document.getElementById('correct-audio');
 const incorrectAudio = document.getElementById('incorrect-audio');
 const answerContainer = document.querySelector(".answer-container");
 const gameOverContainer = document.getElementById('game-over-container');
+const getResults = document.getElementById('results');
+
 
 let time = 100;
 let timerInterval;
 let results = [];
+
 
 if (localStorage.getItem("highscores")){
 
@@ -100,7 +103,29 @@ function showHighScorePrompt() {
   console.log(results);
 }
 
+function renderHighScore() {
+  const highscores = JSON.parse(localStorage.getItem("highscores"));
+  console.log(highscores);
 
+  for (let i = 0; i < highscores.length; i++) {
+    const el = highscores[i];
+    console.log("el.initials", el.initials);
+    console.log("el.time", el.time);
+    const listEntry = `<li>${el.initials}:${el.time}</li>`
+    getResults.appendTo(listEntry);
+
+  }
+
+}
+
+renderHighScore();
+
+// var printSkills = function (name, date) {
+//   var listEl = $('<li>');
+//   var listDetail = name.concat(' on ', date);
+//   listEl.addClass('list-group-item').text(listDetail);
+//   listEl.appendTo(skillsListEl);
+// };
 
 let currentQuestionIndex = 0;
 
