@@ -1,0 +1,75 @@
+/*Timer Counting Element Pushed to Top Right of Screen */
+.timerHeader {
+    display: block;
+    justify-content: flex-end;
+}
+
+/* View High Scores Pushed to Top Left of Screen */
+.highScores {
+    display:flex;
+    justify-content: flex-start;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    margin-top: 0;
+}
+
+#quiz-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  #question-container {
+    display:none; /* Initially hidden until start button is clicked */
+  }
+
+  #game-over-container {
+    display: none; /* Initially hidden until game is over */
+  }
+
+  .hide {
+    display: none;
+  }
+
+  .reveal{
+    display: block;
+  }
+
+  .answer-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 5%;
+
+  }
+
+  button {
+    width: max-content;
+    min-width: 50px;
+    margin: 2px;
+    background-color: #00b8d4;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 10px;
+  }
+
+
+  button:hover {
+    background-color: #0091ea;
+  }
+
+  .wrong {
+    font-weight: bold;
+    transition: all .5s ease-out;
+    opacity: 1;
+  }
+
+  .wrong.hidden {
+    opacity: 0;
+  }
